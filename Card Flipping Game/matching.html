@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Matching</title>
+<style>
+    img{
+        margin: 25px; 
+    }
+</style>
+</head>
+<body onload = "reset()">
+    <img id="image" alt="Back of Card" src="back.png"  onclick="flipCard()"/>
+    <img id="image1" alt="Back of Card" src="back.png" onclick="flipCard1()"/>
+    <img id="image2" alt="Back of Card" src="back.png" onclick="flipCard2()"/>
+    <img id="image3" alt="Back of Card" src="back.png" onclick="flipCard3()"/>
+    <img id="image4" alt="Back of Card" src="back.png" onclick="flipCard4()"/>
+    <img id="image5" alt="Back of Card" src="back.png" onclick="flipCard5()"/>
+    <br>
+    <input type="button" value="Restart Game" id="restart" />
+
+    <script>
+        var cards = new Array(
+          {src: "1clubs.png", value: 0, flipped: false},{src: "2clubs.png", value: 1, flipped: false},{src: "3clubs.png", value: 2, flipped: false},{src: "1hearts.png", value: 0, flipped: false},{src: "2hearts.png", value: 1, flipped: false},{src: "3hearts.png", value: 2, flipped: false},
+          );
+
+
+          var flipped = 0;
+          var preValue = 0;
+          var preIndex = 0; 
+          var prevDocumentId;
+          var currentDocumentId;
+          var cardsRemain = 6; 
+          var values = new Array(0,1,2,3,4,5); 
+          
+
+          function resetCard() { 
+            console.log("test"); 
+            return;
+
+          }
+
+          function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+          }
+
+          function reset(){
+            flipped = 0;
+            preValue = 0;
+            prevDocumentId = 0;
+            preIndex = 0; 
+            currentDocumentId = 0;
+            cardsRemain = 6;
+            var duplicate = new Array(false, false, false, false, false); 
+            document.getElementById("image").src = "back.png"; 
+            document.getElementById("image1").src = "back.png"; 
+            document.getElementById("image2").src = "back.png"; 
+            document.getElementById("image3").src = "back.png"; 
+            document.getElementById("image4").src = "back.png"; 
+            document.getElementById("image5").src = "back.png"; 
+
+            
+            for(var i = 0; i < 6; i++){
+                cards[i].flipped = false; 
+                var num = getRandomInt(6); 
+                if(!duplicate[num]){
+                    values[i] = num;
+                    duplicate[num] = true; 
+                } 
+                else{
+                    i--;
+
+                }
+                  
+
+            }
+
+           }
+
+
+
+          function handleFlip(index) {
+                   
+                if ( preValue != cards[index].value) {
+                    currentDocumentId.src = "back.png";
+                    prevDocumentId.src = "back.png";
+                    prevDocumentId = 0; 
+                    console.log("time");
+                    setTimeout(resetCard(), 1500);
+                } else {
+                    currentDocumentId.src = "clear.png";
+                    prevDocumentId.src = "clear.png";
+                    cards[index].flipped = true;
+                    cards[preIndex].flipped = true; 
+                    cardsRemain -= 2; 
+                    console.log("time");
+                    setTimeout(resetCard(), 1500);
+                }
+                flipped = 0;
+           }
+
+          function flipCard(){
+           
+            index = parseInt(values[0]); 
+
+            currentDocumentId = document.getElementById("image");
+            if (cards[index].flipped || cardsRemain == 0){
+                return; 
+            }
+            if(prevDocumentId == currentDocumentId){
+                return; 
+            }
+            currentDocumentId.src = cards[index].src;
+            flipped++;
+            if ( flipped == 2) {
+                handleFlip(index);
+            } else {
+                preValue = cards[index].value;
+                preIndex = index; 
+                prevDocumentId = document.getElementById("image");
+            }
+
+
+          }
+          function flipCard1(){
+
+            index = parseInt(values[1]); 
+            currentDocumentId = document.getElementById("image1");
+            if (cards[index].flipped || cardsRemain == 0){
+                return; 
+            }
+            if(prevDocumentId == currentDocumentId){
+                return; 
+            }
+            console.log(index); 
+            currentDocumentId.src = cards[index].src;
+            flipped++;
+            if ( flipped == 2) {
+                handleFlip(index);
+            } else {
+                preValue = cards[index].value;
+                prevDocumentId = document.getElementById("image1");
+            }
+          }
+          function flipCard2(){
+            index = parseInt(values[2]);  
+            currentDocumentId = document.getElementById("image2");
+            if (cards[index].flipped || cardsRemain == 0){
+                return; 
+            }
+            if(prevDocumentId == currentDocumentId){
+                return; 
+            }
+            currentDocumentId.src = cards[index].src;
+            flipped++;
+            if ( flipped == 2) {
+                handleFlip(index);
+            } else {
+                preValue = cards[index].value;
+                prevDocumentId = document.getElementById("image2");
+            }
+          }
+          function flipCard3(){
+            index = parseInt(values[3]); 
+            currentDocumentId = document.getElementById("image3");
+            if (cards[index].flipped || cardsRemain == 0){
+                return; 
+            }
+            if(prevDocumentId == currentDocumentId){
+                return; 
+            }
+            currentDocumentId.src = cards[index].src;
+            flipped++;
+            if ( flipped == 2) {
+                handleFlip(index);
+            } else {
+                preValue = cards[index].value;
+                prevDocumentId = document.getElementById("image3");
+            }
+          }
+          function flipCard4(){
+            index = parseInt(values[4]); 
+            currentDocumentId = document.getElementById("image4");
+            if (cards[index].flipped || cardsRemain == 0){
+                return; 
+            }
+            if(prevDocumentId == currentDocumentId){
+                return; 
+            }
+            currentDocumentId.src = cards[index].src;
+            flipped++;
+            if ( flipped == 2) {
+                handleFlip(index);
+            } else {
+                preValue = cards[index].value;
+                prevDocumentId = document.getElementById("image4");
+            }
+          }
+          function flipCard5(){
+            index = parseInt(values[5]); 
+            currentDocumentId = document.getElementById("image5");
+            if (cards[index].flipped || cardsRemain == 0){
+                return; 
+            }
+            if(prevDocumentId == currentDocumentId){
+                return; 
+            }
+            currentDocumentId.src = cards[index].src;
+            flipped++;
+            if ( flipped == 2) {
+                handleFlip(index);
+            } else {
+                preValue = cards[index].value;
+                prevDocumentId = document.getElementById("image5");
+            }
+          }
+
+    document.getElementById("restart").addEventListener("click", reset);
+
+    </script>
+
+</body>
+</html>

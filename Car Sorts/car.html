@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Configure Your GT Super Sportscar</title>
+<link type="text/css" rel="stylesheet" href="car.css" />
+</head>
+
+<body>
+    
+    
+    <h1>Configure Your GT Super Sportscar</h1>
+    <form method= "post" id="signup">
+    <fieldset id = "configuration">
+        <div class = "titleText">
+            <h2>Configuration</h2>
+        </div>
+        
+        <input id="gtManual" type="radio" value="17790"   />
+           <label for="gtManual">GT Manual <span class = "amount" >$17,790.00</span></label> 
+           <br>
+        <input id="gtAuto" type="radio" value="18590" /> 
+           <label for="gtAuto">GT Automatic <span class = "amount" >$18,590.00</span></label>
+           <br>
+        <input id="gtsManual" type="radio" value="22455" />
+           <label for="gtsManual">GT-S Manual <span class = "amount" >$22,455.00</span></label> 
+           <br>
+        <input id="gtsSport" type="radio" value="23155" />
+           <label for="gtsSport">GT-S Sportshift <span class = "amount" >$23,155.00</span></label> 
+           <br>
+        </fieldset>
+
+      <fieldset id = "factory">
+        <div class = "titleText">
+            <h2>Factory Options</h2>
+        </div>
+        
+        <input name="factory" id="optionOne" type="radio" value="1235" />
+           <label for="optionOne">Option Combo #1 <span class = "amount" >$1235.00</span></label> 
+           <ul>
+            <li>Power Windows, Doors, Cruise Control</li>
+          </ul>
+          <br>
+        <input name="factory" id="optionTwo" type="radio" value="3354" />
+           <label for="optionTwo">Option Combo #2 <span class = "amount" >$3354.00</span></label>
+           <ul>
+            <li>Rear Spoiler and Fog Lamps</li>
+            <li>Keyless Entry</li>
+            <li>Power Tilt & Slide Moonroof</li>
+            <li>Power Windows, Doors, Cruise Control</li>
+          </ul>
+          <br>
+        <input name="factory" id="no" type="radio" value="0" />
+           <label for="no">No Combo <span class = "amount" >$0</span> </label>  
+      </fieldset>
+
+      <fieldset>
+        <div class = "titleText">
+            <h2>Dealer Options</h2>
+        </div>
+        <div class = "checkbox one">
+            <input class = "oneText" name="stereoSystem" id="stereoSystem" type="checkbox" value = "550" />
+            
+        </div>
+        <label for="stereoSystem">Upgraded Stereo System <span class = "amount" >$550.00</span></label>   
+       
+        <br>
+        <div class = "checkbox two">
+            <input  name="securitySystem" id="securitySystem" type="checkbox" value = "399" />
+            
+        </div>
+        <label class = "twoText" for="securitySystem">VIP Security System<span class = "amount moneyTwo" >$399.00</span></label> 
+        
+       
+        <br>
+        <div class = "checkbox three">
+            <input name="mirror" id="mirror" type="checkbox" value = "295"/>
+            
+        </div>
+        <label class = "threeText" for="mirror">Auto-Dimming Mirror<span class = "amount moneyThree" >$295.00</span></label> 
+        
+       
+        <br>
+
+
+      </fieldset>
+
+
+      <fieldset>
+        <div class = "titleText">
+            <h2>Total Price</h2>
+        </div>
+          
+        <input type ="text"  id="total" >
+        <input type="button" value="Calculate Total" id="CalculateTotal" />
+      </fieldset>
+
+    
+
+    <div class = "carColor">
+        <img id="image" alt="Car Image" src="red.jpg" />
+        <fieldset class = "carColor">
+            <div class = "titleText">
+                <h2>Choose a Color</h2>
+            </div>
+            <select name="color" id="color" size = "5">
+                <option value="red.jpg">Red </option>
+                <option value="blue.jpg">Blue </option>
+                <option value="silver.jpg">Silver </option>
+                <option value="white.jpg">White </option>
+                <option value="black.jpg">Black </option>
+        </select>
+        </fieldset>
+    </div>
+      
+      
+    </form>
+
+    <script>
+
+        function getConfigCost (){
+            var configval = 0;
+            gtManualElement = document.getElementById('gtManual'); 
+            gtAutoElement= document.getElementById('gtAuto');
+            gtsManualElement= document.getElementById('gtsManual');
+            gtsSportElement= document.getElementById('gtsSport');
+            if(gtManualElement.checked) {
+                configval = gtManualElement.value
+            }
+            else if(gtAutoElement.checked){
+                configval = gtAutoElement.value
+            }
+            else if(gtsManual.checked){
+                configval = gtsManual.value
+            }
+            else if(gtsSportElement.checked) {
+                configval = gtsSportElement.value
+            }
+            
+            return configval;
+        }
+
+        function getFactoryCost (){
+            var factoryval = 0;
+            noElement = document.getElementById('no'); 
+            oneElement = document.getElementById('optionOne');
+            twoElement = document.getElementById('optionTwo');
+            if(noElement.checked) {
+                factoryval = noElement.value
+            }
+            else if(oneElement.checked){
+                factoryval = oneElement.value
+            }
+            else if(twoElement.checked){
+                factoryval = twoElement.value
+            }
+            
+            return factoryval;
+        }
+
+        function getDealerCost (){
+            var dealerval = 0;
+            stereoElement = document.getElementById('stereoSystem'); 
+            vipElement = document.getElementById('securitySystem');
+            mirrorElement = document.getElementById('mirror');
+            if(stereoElement.checked) {
+                dealerval += parseInt(stereoElement.value)
+            }
+            if(vipElement.checked){
+                dealerval += parseInt(vipElement.value)
+            }
+            if(mirrorElement.checked){
+                dealerval += parseInt(mirrorElement.value)
+            }
+            
+            return dealerval;
+        }
+
+        function getCost() {
+            totalElement = document.getElementById("total");
+            var totalcost = parseInt(getConfigCost()) + parseInt(getFactoryCost()) + parseInt(getDealerCost()); 
+            // document.getElementById('total').innerHTML = totalcost;
+            // document.getElementsByName('total')[0].value= totalcost;
+
+            totalElement.value = totalcost; 
+        }
+        document.getElementById("CalculateTotal").addEventListener("click", getCost);
+
+        function getSelectedCar() {
+            var select;
+            var choices = document.getElementById('color').options; 
+             for (var option of choices )
+             {
+                if (option.selected) {
+                    select = option.value; 
+                }
+            }
+            document.getElementById("image").src=select;
+             
+        }  
+
+        document.getElementById("color").addEventListener("click", getSelectedCar);
+
+        
+
+
+        
+    </script>
+
+</body>
+</html>

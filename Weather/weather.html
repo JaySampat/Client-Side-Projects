@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Weather</title>
+<style>
+    #output{
+        width: 400px;
+        height: 200px;
+    }
+
+    h4{
+        display: inline;
+    }
+
+
+</style>
+</head>
+
+<body>
+<h4>Enter ZIP code: </h4>
+<input type="textarea" id="zipcode" />
+<input type="button" value="Get Weather" onclick="getWeather()" />
+<input type="button" value="Clear" id="clear" />
+<br>
+<textarea id="output"></textarea> 
+
+<script>
+
+function getWeather() {
+    var zipCode = document.getElementById("zipcode").value; 
+    var url = "https://api.openweathermap.org/data/2.5/weather?zip="+ zipCode + ",us&units=imperial&APPID=2b05e8e7914544035d83e6edcd5d3fee"; 
+    fetch(url)
+        .then((response) => response.json())
+		.then((jsonResult) => processWeather(jsonResult))
+        .catch(notifyOfError);
+}
+
+function processWeather(jsonResult) {
+    const myJSON = JSON.stringify(jsonResult);
+    console.log(myJSON);
+    const out = JSON.parse(myJSON); 
+    var outText = document.getElementById("output").value;
+    outText += out.name + ": " + out.main.temp + '\n'; 
+    console.log(out.name);      
+	document.getElementById("output").value = outText;
+}
+
+function notifyOfError(err) {
+    var errMsg = err.msg;
+	document.getElementById("output").value = errMsg;
+}
+
+function clear(){
+    console.log("clear"); 
+    var val = ""; 
+    document.getElementById("output").value = val; 
+}
+
+document.getElementById("clear").addEventListener("click", clear); 
+
+</script>
+</body>
+</html>

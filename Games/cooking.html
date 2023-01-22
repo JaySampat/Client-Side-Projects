@@ -1,0 +1,125 @@
+<!DOCTYPE html "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Chef (Grade in Chrome)</title>
+<style>
+    body{
+        display: grid; 
+        grid-template-columns:  auto auto auto;
+        grid-template-rows: auto; 
+    }
+    #title, .ingredient{
+        grid-column: 1;
+    }
+    #skillet{
+        border: solid black 2px; 
+        /* margin-left: 150px; */
+        /* margin-top: 70px; */
+        height: 150px;
+        width: 150px;
+        grid-column: 2;
+        position: absolute; 
+        top: 50px;
+        left: 200px;  
+        
+
+    }
+
+    #ind{
+        grid-column: 2;
+        position: absolute;
+        top: 300px;
+        left: 200px;
+    }
+
+    #Recipe{
+        grid-column: 2;
+        position: absolute; 
+        top: 250px; 
+        left: 200px; 
+
+
+    }
+    #timer{
+        grid-column: 3;
+        position: absolute;
+        top:50px; 
+        left: 500px;
+
+    } 
+    #seconds{
+        grid-column: 3;
+        position: absolute;
+        top:100px; 
+        left: 500px;
+
+    }
+    #scoreText{
+        grid-column: 3;
+        position: absolute;
+        top:150px; 
+        left: 500px;
+    } 
+    #score{
+        grid-column: 3;
+        position: absolute;
+        top:200px; 
+        left: 500px;
+
+    }
+    #start{
+        grid-column: 3;
+        position: absolute;
+        top:250px; 
+        left: 500px;
+    }
+
+    #start{
+        width: 50px; 
+    }
+    .ingredient{
+        grid-column: 1;
+        border: solid blue 1px;
+        height: 50px; 
+        width: 100px; 
+        margin-bottom: 5px; 
+        margin-left: 25px;
+
+    }
+
+    #table{
+        margin-top: 100px;
+    }
+
+
+</style>
+<script type="text/javascript" src="cooking.js"></script>
+    <!-- <script>
+        function load(){
+            loadingredients(); 
+             
+        }
+        
+    </script> -->
+<script type="text/javascript" src="mycooking.js"></script>
+</head>
+
+<body onload="loadingredients()">
+
+    <h1 id="title">Chef</h1>
+    <div id="table" style="position: absolute; top: 0px; left: 0px; right:0px; bottom:0px;"></div>
+    <div id="skillet" style="position: absolute; top: 50px; left: 200px">
+        <p>Skillet</p>
+    </div>
+    <h1 id = "Recipe">Recipe</h1>
+    <div id = "ind" ></div>
+    <h1 id = "timer">Timer</h1>
+    <p id = "seconds"><span id="time">20</span> seconds</p>
+    <h1 id = "scoreText">Score</h1>
+    <p id = "score"><span id="scorevalue">0</span></p>
+    <input type="button" value="Start" id="start"  onclick=onStart() />
+
+    
+</body>
+
+</html>

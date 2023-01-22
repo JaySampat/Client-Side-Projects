@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+<meta charset="UTF-8" />
+<title>Escape (Grade in Firefox)</title>
+<style>
+  #loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    width: 250px;
+    height: 120px;
+    margin: -76px 0 0 -76px;
+    font-size: 20pt;
+    font-weight: bold;
+    
+  }
+  
+  #grid {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto; 
+    grid-gap: 0px;
+    width: 400px;
+    top:0;
+    left:0;
+    position: absolute;
+  
+  }
+  
+  .cell {
+    border: 1px solid #c2ba3c;
+    background: #f8ffde;
+    padding: 25px;
+  }
+  
+  #text{
+    float: right;
+    text-align: right;
+    margin-right: 150px; 
+    top: -200px; 
+    display: none; 
+  }
+  
+  .overlay{
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 0;
+    bottom: 0;
+    width: 20%;
+    height: 10%;
+    
+  }
+  
+  #caught{
+    background-color: white; 
+    border: solid black; 
+    z-index: 2;
+    font-size: 25pt;
+    width: 200px; 
+    font-weight: bold; 
+  
+  }
+  #win{
+    background-color: white; 
+    border: solid black; 
+    z-index: 2;
+    font-size: 25pt;
+    width: 250px; 
+    font-weight: bold; 
+  }
+  </style>
+</head>
+<body>
+
+<div id="grid">
+ 
+</div>
+
+
+
+
+<div id="loader">
+
+<div class="dropdown">
+  <fieldset class = "level">
+    <div class = "titleText">
+        <h2>Choose a Difficulty Level</h2>
+    </div>
+    <select name="numrobots" id="numrobots" >
+        <option value="1">1 </option>
+        <option value="2">2 </option>
+        <option value="3">3 </option>
+</select>
+</fieldset>
+  
+  <br>
+  <input type="button" value="Start Game" id="start" onclick=loadGame() />
+</div>
+
+</div>
+<div id ="text" >
+  <h1 >Current Turn: <span id="currentturn"></span> </h1>
+  <br>
+  <h1>Moves Left for Turn:  <span id="movesleft"></span></h1>
+  <br>
+  <input type="button" value="Roll Dice" id="dice" onclick=setDice() />
+</div>
+
+<div class="overlay">
+  <div id="caught" style= "display: none;">You were caught. </div>
+  <div id="win" style= "display: none;">Congratulations, you escaped! </div>
+
+</div>
+
+
+
+<script>
+var exitpos = Math.floor(Math.random() * 10);
+var userpos = Math.floor(Math.random() * 10) + 90;
+var robots = [10,10,10];
+var dice = 3;
+var turns = 0;
+var numrobots = 0;
+var caught = false; 
+var gamewin = false;
+
+
+function setDice(){
+  dice = Math.floor(Math.random() * 6) + 1;
+  movesleft = dice;
+  console.log(movesleft); 
+  caught = false; 
+  gamewin = false;
+  turns++;
+  document.getElementById("movesleft").innerHTML = movesleft;
+  document.getElementById("currentturn").innerHTML = turns;
+  for (var i = 0; i < numrobots; i++) { 
+   var robot = document.getElementById(robots[i]);
+   robot.style.background = "red";
+  }
+  var exit = document.getElementById(exitpos);
+  exit.style.background = "green";
+
+
+  var user = document.getElementById(userpos);
+  user.style.background = "blue";
+ 
+  document.getElementById("caught").style.display = "none";
+  document.getElementById("win").style.display = "none";
+
+}
+
+
+function setRobots(num) { 
+	
+    for (  i = 0;  i <num; i++ ) { 
+       var idx = Math.floor(Math.random() * 100);
+       while ((idx == exitpos) || 
+              (idx == robots[0]) || 
+              (idx == robots[1]) || 
+              (idx == robots[2]) || 
+              (idx == userpos)) {     
+       	idx = Math.floor(Math.random() * 100);   
+       }
+       robots[i] = idx;
+       var robot = document.getElementById(idx);
+       robot.style.background = "red";
+    }
+    numrobots= num; 
+    
+}
+
+function getColumn (loc) { 
+    return (parseInt(loc) % 10 );
+}
+
+function getRow (loc) { 
+    return parseInt((parseInt(loc) / 10 ));
+}
+
+function userTurn(e) {
+   console.log("userturn"); 
+  if ( caught == true ) 
+    return;
+  if ( gamewin == true ) 
+    return; 
+  if ( movesleft > 0) { 
+    userMove(e);
+     
+  }
+  if(movesleft == 0){
+    console.log("robot"); 
+    robotMove(); 
+    movesleft = -1; 
+  }
+  console.log(movesleft); 
+
+}
+
+function afterWait() { 
+  console.log("donewaiting");
+  for(var i = 0; i < numrobots; i++){
+    var robotRow = getRow(robots[i]);
+    var robotCol = getColumn(robots[i]);
+    var rowidx = parseInt(robotRow) * 10;
+    for(var j = rowidx; j <= rowidx + 9; j++){
+      if(j != robots[i] && j != userpos && j != exitpos){
+        document.getElementById(j).style.background = "white";
+      }
+
+    }
+    for(var x = robotCol; x < 100; x+=10){
+      if(x != robots[i] && x != userpos && x != exitpos){
+      document.getElementById(x).style.background = "white";
+      }
+    }
+  }
+  if(caught == true){
+     document.getElementById("caught").style.display = "block";
+  }
+}
+
+function check(){
+  var userRow = getRow(userpos); 
+  var userCol = getColumn(userpos); 
+  
+  for(var i = 0; i < numrobots; i++){
+    var robotRow = getRow(robots[i]); 
+    var robotCol = getColumn(robots[i]); 
+    var rowidx = parseInt(robotRow) * 10; 
+    console.log(rowidx); 
+
+    for(var j = rowidx; j <= rowidx + 9; j++){
+      if(j != robots[i] && j != userpos && j != exitpos){
+        var idr = document.getElementById(j);
+        idr.style.background = "yellow"; 
+      }
+      
+    }
+    for(var x = robotCol; x < 100; x+=10){
+      if(x != robots[i]  && x != userpos && x != exitpos){
+        var idc = document.getElementById(x);
+        idc.style.background = "yellow"; 
+      }
+    }
+  }
+
+  var myVar;
+
+  myVar = setTimeout(afterWait, 1000);
+
+
+}
+
+
+
+function robotMove() { 
+    var userRow = getRow(userpos); 
+    var userCol = getColumn(userpos); 
+    console.log("User " + userRow, userCol, numrobots, exitpos);
+
+    for ( var i = 0; i <  numrobots; i++) { 
+      var robotRow = getRow(robots[i]); 
+      var robotCol = getColumn(robots[i]); 
+      var newPos = robots[i]; 
+      console.log("robot " + robotRow, robotCol);
+      if(robotRow == userRow){
+        if(robotCol > userCol){
+          robotCol--; 
+        }
+        else{
+          robotCol++; 
+        }
+        caught = true; 
+      }
+
+      else if(robotCol == userCol){
+        if(robotRow > userRow){
+          robotRow--; 
+        }
+        else{
+          robotRow++; 
+        }
+        caught=true; 
+      }
+
+      else{
+        if(robotRow > userRow){
+          robotRow--; 
+        }
+        else{
+          robotRow++; 
+        }
+        if(robotCol > userCol){
+          robotCol--; 
+        }
+        else{
+          robotCol++; 
+        }
+      }
+      if(robotRow == userRow || robotCol == userCol){
+        caught = true; 
+      }
+      newPos = parseInt(robotRow) * 10  + parseInt(robotCol); 
+      console.log("robotnew: " + newPos, i);
+      if ( newPos < 0 || newPos > 99 )  {
+     		    break;
+      }
+
+      if(newPos == exitpos){
+        break; 
+      }
+      if(newPos == userpos){
+        console.log("Caught"); 
+        caught = true; 
+        return; 
+         
+      }
+      var newCell = document.getElementById(newPos); 
+      var old = document.getElementById(robots[i]);
+      
+      old.style.background = "white";
+      newCell.style.background = "red";
+      robots[i] = newPos; 
+      console.log("Done"); 
+
+    }
+    check();
+
+
+
+
+
+}
+
+
+
+function userMove(e) { 
+	
+    var idx = e.target.id || e.srcElement.id;
+    console.log("usermove", idx, parseInt(userpos)) ;
+    if ( (idx == ((parseInt(userpos)) + 1 )) || 
+         (idx == ((parseInt(userpos)) - 1 )) ||
+         (idx == ((parseInt(userpos)) + 10)) ||
+         (idx == ((parseInt(userpos)) - 10))
+         ) {
+         if ( idx < 0 || idx > 99 )  {
+     		    return;
+         }
+         if (idx == exitpos ) {
+            console.log("Win");
+            document.getElementById("win").style.display = "block";
+            gamewin = true;
+	          return;
+         }
+      var next = document.getElementById(idx); 
+      var cur = document.getElementById(userpos);
+      cur.style.background = "white";
+      next.style.background = "blue";
+      userpos = idx;
+      movesleft--; 
+      document.getElementById("movesleft").innerHTML = movesleft;
+      
+   }
+    else { 
+     console.log(-1, idx, userpos);
+     console.log(movesleft);  
+   }
+   
+   
+}
+
+function loadGame(e) {
+  var select;
+  var choices = document.getElementById("numrobots").options; 
+    for (var option of choices )
+    {
+      if (option.selected) {
+          select = option.value; 
+      }
+    }
+    numrobots = parseInt(select); 
+
+document.getElementById("loader").style.display = "none";
+document.getElementById("text").style.display = "inline";
+  var data = [
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+  ];
+ 
+  var container = document.getElementById("grid");
+  var pos = 0;
+  for (var i of data) { for (var j of i) {
+    var cell = document.createElement("div");
+    cell.innerHTML = " ";
+    cell.className = "cell";
+    cell.id = pos;
+    cell.style.background = "white";
+    cell.onclick=function(e) {userTurn(e)};
+    container.appendChild(cell);
+    pos++;
+  }}
+  
+  var exit = document.getElementById(exitpos);
+  exit.style.background = "green";
+  
+  
+  var user = document.getElementById(userpos);
+  user.style.background = "blue";
+  
+  setRobots(numrobots);
+  document.getElementById("text").style.display = "display"; 
+}
+
+
+window.addEventListener("load", function(){
+
+document.getElementById("loader").style.display = "display";
+ 
+
+});
+</script>
+
+</body>
+</html>
+
+

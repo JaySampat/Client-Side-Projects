@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Bay Area Colleges and Universities</title>
+<style>
+    
+    table td{
+        border:1px solid black;
+        margin: 50px; 
+        padding: 5px; 
+        font-size: 12pt; 
+        
+    }
+    th{
+        color: white; 
+        background-color: black;
+        border:1px solid white; 
+    }
+    table{
+      float: left; 
+      border-collapse: collapse;
+      margin-right: -35px; 
+    }
+   
+    .odd{
+        background-color: #EEE;
+    }
+    .source{
+        font-style: italic;
+
+    }
+
+    fieldset{
+      float: right; 
+      margin-left: 25px ;
+      margin-right: 50px; 
+    
+    }
+
+    .input{
+      display: inline-block; 
+    }
+
+    .blank{
+      font-size: 10pt;
+      position: relative; 
+      top: -25px; 
+
+    }
+
+    #update{
+      float: right; 
+      position: relative;
+      bottom: -360px;
+      right: -95px; 
+      font-size: 12pt; 
+    }
+
+
+    legend{
+      text-align: center;
+      color: white;
+      background-color: rgb(82, 79, 79);
+      font-size:25pt;
+      font-weight: bold;
+      font-family: sans-serif;
+    }
+
+    #title{
+      text-align: center;
+      color: white;
+      background-color: rgb(82, 79, 79);
+      font-size:25pt;
+      font-weight: bold;
+      font-family: sans-serif;
+
+    }
+
+    
+    
+</style>
+</head>
+<body>
+    <h1>Bay Area Colleges and Universities</h1>
+    <div id="result"></div>
+
+    <form method = "post" id="searchcriteria">
+      <!-- <table id="criteria">
+        <tr>
+          <td id="criteriatxt">Search Criteria</td>
+        </tr>
+      </table> -->
+      <fieldset>
+        <legend>Search Criteria</legend>
+        <input id="public" type="radio" name="ownership"/>
+           <label for="public">Public </label> 
+        <input id="private" type="radio" name="ownership"/>
+           <label for="private">Private </label>
+        <input id="dont" type="radio" checked="checked" name="ownership"/>
+           <label for="dont">Don't Care </label> 
+        <br>
+        <p class = "input">Maximum Tuition </p>
+        <input type ="text"  class = "input" id="max" >
+        <p class = "blank">leave blank for don't care</p>
+        
+        <p class = "input">Maximum High SAT </p>
+        <input type ="text"  class = "input" id="maxSAT" >
+        <p class = "blank">leave blank for don't care</p>
+
+        <p class = "input">Minimum Low SAT </p>
+        <input type ="text"  class = "input" id="minSAT" >
+        <p class = "blank">leave blank for don't care</p>
+  
+      </fieldset>
+
+      <input type="button" value="Update" id="update" />
+
+    </form>
+        
+
+    <script>
+      var univArray = new Array(
+          {name: "Stanford University", nickname: "Stanford", ownership: "private", SATh: 1570, SATl: 1380, tuition: 44757},
+          {name: "University of California, Berkeley", nickname: "UC Berkeley", ownership: "public", SATh: 1500, SATl: 1250, tuition: 13844},
+          {name: "University of California, Santa Cruz", nickname: "UC Santa Cruz", ownership: "public", SATh: 1280, SATl: 1000, tuition: 13398},
+          {name: "San Francisco State University", nickname: "SFSU", ownership: "public", SATh: 1110, SATl: 880, tuition: 6468},
+          {name: "San Jose State University", nickname: "SJSU", ownership: "public", SATh: 1160, SATl: 880, tuition: 9496},
+          {name: "Sonoma State University", nickname: "Sonoma State", ownership: "public", SATh: 1090, SATl: 880, tuition: 7276},
+          {name: "California State University, East Bay", nickname: "CalState East Bay", ownership: "public", SATh: 1010, SATl: 800, tuition: 6550, room: 6435},
+          {name: "University of San Francisco", nickname: "USF", ownership: "private", SATh: 1270, SATl: 1070, tuition: 41450},
+          {name: "Santa Clara University", nickname: "SCU", ownership: "private", SATh: 1380, SATl: 1190, tuition: 43812},
+          {name: "Mills College", nickname: "Mills College", ownership: "private", SATh: 1250, SATl: 1040, tuition: 42918}
+          );
+      
+
+      function getResults(){
+        public = document.getElementById('public'); 
+        private = document.getElementById('private');
+        dont = document.getElementById('dont');
+        maxTuition = document.getElementById("max").value; 
+        minSAT = document.getElementById("minSAT").value;
+        maxSAT = document.getElementById("maxSAT").value; 
+        var output = "<table>"; 
+        output += "<tr id=title >"; 
+        output += "<td>" + "Name" + "</td>"; 
+        output += "<td>" + "SAT High" + "</td>";
+        output += "<td>" + "SAT Low" + "</td>";
+        output += "<td>" + "Tuition" + "</td>";
+        output += "</tr>"; 
+
+
+        for(var i = 0; i < univArray.length; i++){
+          if((maxTuition.length > 0 && univArray[i].tuition <= parseInt(maxTuition)) || (maxTuition.length == 0)){
+            if((maxSAT.length > 0 && univArray[i].SATh <= parseInt(maxSAT)) || (maxSAT.length == 0)){
+              if((minSAT.length > 0 && univArray[i].SATl <= parseInt(minSAT)) || (minSAT.length == 0)){
+                if((public.checked && univArray[i].ownership == "public") || (private.checked && univArray[i].ownership == "private") || dont.checked ){
+                  output += "<tr>"; 
+                  output += "<td>" + univArray[i].nickname + "</td>"; 
+                  output += "<td>" + univArray[i].SATh + "</td>"; 
+                  output += "<td>" + univArray[i].SATl + "</td>"; 
+                  output += "<td>" + univArray[i].tuition + "</td>"; 
+                  output += "</tr>"; 
+                }
+              }
+            }
+          }
+        }
+
+        output += "</table>"; 
+        document.getElementById("result").innerHTML = output; 
+      }
+      document.getElementById("update").addEventListener("click", getResults);
+
+      
+      
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,35 @@
+body{
+    background-color: rgb(84, 156, 35);
+}
+
+h1{
+    font-variant: small-caps;
+    text-align: center;
+    font-size: 50pt;
+    font-family: fantasy;
+}
+
+p{
+    font-family: fantasy;
+    text-align: center;
+}
+
+input{
+    display:block; 
+    margin-right: auto;
+    margin-left: auto;
+    background-color: bisque;
+}
+
+
+textarea{
+    display:block; 
+    margin-right: auto;
+    margin-left: auto;
+    background-color: bisque;
+    font-family: sans-serif;
+}
+
+#description{
+    height: 300px; 
+}

@@ -1,0 +1,22 @@
+*{
+    font-family: sans-serif; 
+}
+
+
+img{
+    float: left; 
+    padding: 25px 0px 0px 0px;
+	margin: 80px 30px 0px 0px;
+}
+
+h1{
+    text-align: center;
+}
+ a:hover{
+     color: red; 
+
+ }
+ .stanford{
+     color: red; 
+     font-weight: bold;
+ }

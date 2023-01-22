@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html >
+<head>
+<title>Stanford Map</title>
+<style type="text/css">
+
+
+
+#box{ 
+   border: solid gray 25px;
+   overflow: hidden;
+   position:absolute;
+}
+
+#up{
+   margin-left:25px; 
+}
+#down{
+   margin-left:25px; 
+}
+#left{
+   margin-right: 20px;
+}
+#zoomin{
+   margin-right: 15px;
+}
+
+
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+</head>
+
+<body onload ="handleResize()">
+
+<div id = "box" style=" width: 400px; height: 400px;  top: 0px; left: 0px; right:0px; bottom: 0px; " >
+
+<img id= "smallImage" src="map-s.gif" alt="Small Map" style="position: absolute; top: 0px; left: 0px; right:0px; bottom:0px;  width: 600px; height: 800px"/>
+
+
+</div>
+
+<form id="buttons" style="position: absolute; top: 300px; left: 1260px;">
+   <input type="button" value="+" id="zoomin" />
+   <input type="button" value="-" id="zoomout" />
+   <br>
+   <br>
+   <input type="button" value="^" id="up" />
+   <br>
+   <input type="button" value="&lt" id="left" />
+   <input type="button" value=">" id="right" />
+   <br>
+   <input type="button" value="v" id="down" />
+</form>
+
+
+<script>
+   
+   function doubleClick(evt){
+      isDragging = false; 
+      var offsetX = 0; 
+      var image = document.getElementById("smallImage");
+      if(evt.clientX > getCenterX()){
+         offsetX = evt.clientX - getCenterX();
+         image.style.left = parseInt(image.style.left) - offsetX + "px"; 
+
+      }
+      else{
+         offsetX = getCenterX() - evt.clientX; 
+         image.style.left = parseInt(image.style.left) + offsetX + "px"; 
+      }
+
+      var offsetY = 0; 
+      if(evt.clientY > getCenterY()){
+         offsetY = evt.clientY - getCenterY(); 
+         image.style.top = parseInt(image.style.top) - offsetY + "px"; 
+      }
+      else{
+         offsetY = getCenterY() - evt.clientY; 
+         image.style.top = parseInt(image.style.top) + offsetY + "px"; 
+      }
+   }
+
+   document.addEventListener("dblclick",doubleClick); 
+
+   function getVisiblewidth() { 
+         var image = document.getElementById("smallImage");
+         var box = document.getElementById("box");
+
+         var visibleX = 0;
+         if (parseInt(image.style.left) > parseInt(box.style.left)) { 
+            visibleX = parseInt(box.style.right) - parseInt(image.style.left);
+         } else { 
+            if ( parseInt(image.style.right) > parseInt(box.style.right) ) { 
+               visibleX = parseInt(box.style.right) - parseInt(box.style.left);
+            } else { 
+               visibleX = parseInt(image.style.right) - parseInt(box.style.left);
+            }
+         }
+         return parseInt(visibleX);
+
+      }
+
+      function getVisibleheight() { 
+         var image = document.getElementById("smallImage");
+         var box = document.getElementById("box");
+
+         var visibleY = 0;
+         if (parseInt(image.style.top) > parseInt(box.style.top)) { 
+            visibleY = parseInt(box.style.bottom) - parseInt(image.style.top);
+         } else { 
+            if ( parseInt(image.style.bottom) < parseInt(box.style.bottom) ) { 
+               visibleY = parseInt(image.style.bottom) - parseInt(box.style.top);
+            } else { 
+               visibleY = parseInt(box.style.bottom) - parseInt(box.style.top);
+            }
+         }
+          return parseInt(visibleY);
+
+      }
+
+      function shiftleft(){ 
+         var image = document.getElementById("smallImage"); 
+         image.style.left = parseInt(image.style.left) + (getVisiblewidth()/2); 
+
+
+      }
+      function shiftright(){ 
+         var image = document.getElementById("smallImage"); 
+         image.style.left = parseInt(image.style.left) - (getVisiblewidth()/2); 
+
+
+      }
+
+      function shifttop(){ 
+         var image = document.getElementById("smallImage"); 
+         image.style.top = parseInt(image.style.top) + (getVisibleheight()/2); 
+
+      }
+      function shiftbottom(){ 
+         var image = document.getElementById("smallImage"); 
+         image.style.top = parseInt(image.style.top) - (getVisibleheight()/2); 
+
+      }
+      
+      document.getElementById("down").addEventListener("click", shiftbottom);
+      document.getElementById("up").addEventListener("click", shifttop);
+      document.getElementById("left").addEventListener("click", shiftleft);
+      document.getElementById("right").addEventListener("click", shiftright);
+
+   function getBoxHeight() {
+      var box = document.getElementById("box");
+      return parseInt(box.style.height);
+   }
+   
+   function getBoxWidth() {
+      var box = document.getElementById("box");
+      return parseInt(box.style.width);
+   }
+   
+   function getBoxTop() {
+      var box = document.getElementById("box");
+      return parseInt(box.style.top);
+   }
+   
+   function getBoxLeft() {
+      var box = document.getElementById("box");
+      return parseInt(box.style.left);
+   }
+   
+   function inBox(x,y) {
+      return (x >= getBoxLeft() && x <= getBoxLeft() + getBoxWidth()
+               && y >= getBoxTop() && y <= getBoxTop() + getBoxHeight());
+   }
+
+   
+   var isDragging = false;
+   var mouseXoffset = 0; 
+   var mouseYOffset = 0; 
+   
+   function handleMouseDown(evt) {
+      if (inBox(evt.clientX,evt.clientY)) {
+         var image = document.getElementById("smallImage");
+         isDragging = true; 
+         evt.preventDefault();
+         image.style.cursor = "move";
+         mouseXoffset = parseInt(evt.clientX);
+         mouseYOffset = parseInt(evt.clientY); 
+      }
+   }
+   
+   function handleMouseUp(evt) {
+      if (isDragging) {
+         isDragging = false;	
+         var box = document.getElementById("smallImage");
+         mouseXoffset = 0; 
+         mouseYOffset = 0;
+
+   
+         	
+      }
+   }
+   
+   function handleMouseMove(evt) {
+      if (isDragging) {
+         var image = document.getElementById("smallImage");
+         image.style.cursor = "move";
+         image.style.left = parseInt(image.style.left) + (parseInt(evt.clientX) - mouseXoffset); 
+         image.style.top = parseInt(image.style.top) + (parseInt(evt.clientY) - mouseYOffset); 
+         mouseXoffset = parseInt(evt.clientX); 
+         mouseYOffset = parseInt(evt.clientY);
+         console.log("test"); 
+         console.log((parseInt(evt.clientX))); 
+
+         evt.preventDefault();
+         
+      }
+   }
+
+   
+   document.addEventListener("mousedown",handleMouseDown, false);
+   document.addEventListener("mouseup",handleMouseUp, false);
+   document.addEventListener("mousemove",handleMouseMove, false);
+
+   function handleResize(){
+      var w = window.innerWidth; 
+      var h = window.innerHeight; 
+      var box = document.getElementById("box");
+      var boxH = parseInt(box.style.height);
+      var boxW = parseInt(box.style.width);
+      var image = document.getElementById("smallImage");
+      var imageH = parseInt(image.style.height);
+      var imageW = parseInt(image.style.width);
+      image.style.left = (boxW-imageW)/2 + "px"; 
+      image.style.right = (boxW-imageW)/2 + "px"; 
+      image.style.top = (boxH-imageH)/2 + "px"; 
+      image.style.bottom = (boxH-imageH)/2 + "px"; 
+      box.style.left = (w-boxW)/2 + "px"; 
+      box.style.right = (w-boxW)/2 + "px"; 
+      box.style.top = (h-boxH)/2 + "px"; 
+      box.style.bottom = (h-boxH)/2 + "px"; 
+      var buttons = document.getElementById("buttons");
+      buttons.style.top = parseInt(box.style.top) + "px"; 
+      buttons.style.left = parseInt(box.style.left) + 500 + "px";
+   
+
+
+
+   }
+
+   window.addEventListener("resize",handleResize);
+
+   var photo = [
+		{filename: "map-s.gif"},
+		{filename: "map-m.gif"},
+		{filename: "map-l.gif"},
+		{filename: "map-xl.gif"}
+	];
+
+   var inIndex = 0; 
+   var outIndex = 0; 
+   function zoomIn(){
+      if(inIndex < 3){
+         inIndex++; 
+      }
+      var image = document.getElementById("smallImage");
+      document.getElementById("smallImage").src=photo[inIndex].filename; 
+   }
+
+   function zoomOut(){
+      if(outIndex > 0){
+         outIndex--; 
+      }
+      var image = document.getElementById("smallImage");
+      document.getElementById("smallImage").src=photo[outIndex].filename; 
+   }
+   document.getElementById("zoomin").addEventListener("click", zoomIn);
+   document.getElementById("zoomout").addEventListener("click", zoomOut);
+
+   function getCenterX(){
+      var box = document.getElementById("box");
+      var boxW = parseInt(box.style.width);
+      return parseInt(box.style.left) + (boxW/2);   
+   }
+
+   function getCenterY(){
+      var box = document.getElementById("box");
+      var boxH = parseInt(box.style.height);
+      return parseInt(box.style.top) + (boxH/2); 
+   }
+
+
+   </script>
+</body>
+
+</html>

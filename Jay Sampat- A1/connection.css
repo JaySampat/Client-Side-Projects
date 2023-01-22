@@ -1,0 +1,144 @@
+body {
+	display: grid;
+	grid-template-columns:  250px 650px 250px;
+    grid-template-rows: auto;
+    font-family: sans-serif;
+}
+
+h1{
+    color: white;
+	font-size: 55pt;
+	margin:20px; 
+	position: relative;
+    bottom: -10px;
+}
+
+#titlebar{
+	background-color: #9a0000;
+	grid-column: 1 / span 2;
+	margin:5px; 
+}
+
+.logo{ 
+	width: 100px; 
+	float:right; 
+	position: relative;
+	top: -20px; 
+}
+
+.dog{
+	grid-column-start: 1; 
+	margin: 5px
+}
+
+.about{
+    font-weight: bold;
+    margin:10px;
+}
+
+#aboutbar{
+    grid-column-start: 1;
+    background-color: #CC9191;
+    margin: 5px; 
+    margin-right: 45px; 
+    border-top: 2px solid black; 
+    border-bottom: 2px solid black; 
+    
+}
+
+.birthday{
+    grid-column-start: 1; 
+    margin: 5px;
+}
+
+.gender{
+    grid-column-start: 1; 
+    margin: 5px;
+}
+
+#friendsbar{
+    grid-column-start: 1;
+    background-color: #CC9191;
+    margin: 5px; 
+    margin-right: 45px; 
+    border-top: 2px solid black; 
+    border-bottom: 2px solid black; 
+}
+
+.friendsText{
+    font-weight: bold;
+    margin:10px;
+}
+
+.friends{
+    grid-column-start: 1; 
+    margin: 5px;
+}
+
+h2{
+    grid-column-start: 2;
+    font-size:30pt; 
+    font-weight: bold;
+    position: relative;
+    top:-340px; 
+    left: -35px; 
+}
+
+#statusbar{
+    grid-column-start: 2;
+    background-color: #CC9191;
+    margin: 5px;  
+    border-top: 2px solid black; 
+    border-bottom: 2px solid black; 
+    position: relative;
+    top:-360px; 
+    left: -40px; 
+}
+
+.statustitle{
+    margin: 10px; 
+}
+
+.statusupdates{
+    grid-column-start: 2;
+    border-top: 2px solid black;
+    margin:5px; 
+    margin-left:10px; 
+    position: relative;
+    top:-360px; 
+    left: -40px; 
+}
+
+#postsbar{
+    grid-column-start: 3;
+    background-color: #CC9191;
+    margin: 5px;  
+    border-top: 2px solid black; 
+    border-bottom: 2px solid black; 
+    position: relative;
+    top:-810px; 
+    height:30px; 
+}
+
+.postsupdates{
+    font-weight: bold;
+    margin:10px;
+}
+
+#textarea{
+    grid-column: 3;
+    border: 1px solid lightgray; 
+    position: relative;
+    top:-825px; 
+    height:30px; 
+    margin-left: 5px;
+    height:100px; 
+}
+
+#button{
+    grid-column: 3;
+    position: relative;
+    top:-820px; 
+    height:30px; 
+    margin: 5px; 
+}
